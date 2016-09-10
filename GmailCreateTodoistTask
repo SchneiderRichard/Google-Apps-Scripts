@@ -1,0 +1,20 @@
+function createTodos() {
+  var starredEmails = GmailApp.getStarredThreads(0, 3);
+
+  for (var i=0; i < starredEmails.length; i++)
+  {
+    var thread = starredEmails[i];
+    var subject = thread.getFirstMessageSubject();
+    var todoEmail = 'EMAIL@HERE.COM';
+    var message = thread.getMessages()[0];
+    var date = message.getDate();
+
+    var comparisonDate = new Date();
+    comparisonDate.setDate(comparisonDate.getDate()-5);
+
+    if (date > comparisonDate) {
+      GmailApp.sendEmail(todoEmail, subject, message.getPlainBody());
+      GmailApp.unstarMessage(message);
+    }
+  }
+}
