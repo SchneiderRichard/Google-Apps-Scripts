@@ -5,16 +5,21 @@ function createTodos() {
   {
     var thread = starredEmails[i];
     var subject = thread.getFirstMessageSubject();
-    var todoEmail = 'EMAIL@HERE.COM';
-    var message = thread.getMessages()[0];
+    var todoEmail = 'TODO@EMAILHERE.COM';
+    var messages = thread.getMessages();
+    var message = messages[0];
     var date = message.getDate();
 
     var comparisonDate = new Date();
     comparisonDate.setDate(comparisonDate.getDate()-5);
 
     if (date > comparisonDate) {
-      GmailApp.sendEmail(todoEmail, subject, message.getPlainBody());
-      GmailApp.unstarMessage(message);
+      var body = '<date tomorrow>' + message.getPlainBody();
+      GmailApp.sendEmail(todoEmail, subject, body);
+      for (var x=0; x < messages.length; x++)
+      {
+        messages[x].unstar();
+      }
     }
   }
 }
